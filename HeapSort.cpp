@@ -56,6 +56,47 @@ public:
         }
         return h;
     } 
+
+    int HeapMaximum(vector<int> v) {
+        return v[0];
+    }
+
+    int HeapExtractMax(vector<int> v, int& err) {
+        err = 0;
+        if (v.size() < 1) {
+            err = -1;
+        }
+        int max = v[0];
+        v[0] = v[v.size() - 1];
+        v.pop_back();
+        MaxHeapify(v, 0);
+        return max;
+    }
+
+    bool HeapIncreaseKey(vector<int> v, int i, int key) {
+        if (i >= v.size() ) {
+            return false;
+        }
+        if (v[i] >= key) {
+            return false;
+        }
+        v[i] = key;
+        int p = root(i);
+        while (i > 0 && v[p] < v[i]){
+            int t = v[p];
+            v[p] = v[i];
+            v[i] = t;
+            i = p;
+            p = root(i);
+        }
+        return true;
+    }
+
+    bool MaxHeapInsert(vector<int> v, int key) {
+        v.push_back(INT_MIN);
+        return HeapIncreaseKey(v, v.size() - 1, key);
+    }
+
     template <class T>
     void PrintContainer(T& v){
         cout << "[";
@@ -81,12 +122,7 @@ int main() {
     vector<int> v = {1,7,8, 5,6,5,6,2,3,4,2,4,3,2};
     Solution s;
     s.MaxHeapify(v, 0);
-    s.PrintContainer<vector<int>>(v);
-    // vector<int> A = {0, 1, 2,3,4,5,6};
-    // s.BuildMaxHeap(A);
-    // s.PrintContainer(A);
-    vector<int> v2 = {0,2,9,8,4};
-    auto h = s.HeapSort(v);
-    s.PrintContainer(h);
+    s.PrintContainer< vector<int> >(v);
+    int err = 0;
     return 0;
 }
